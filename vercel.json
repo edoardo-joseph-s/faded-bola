@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     "version": 2,
     "builds": [
         {
@@ -38,4 +39,45 @@
         "APP_DEBUG": "false",
         "LOG_CHANNEL": "stderr"
     }
+=======
+  "version": 2,
+  "builds": [
+    {
+      "src": "public/index.php",
+      "use": "vercel-php@0.6.2",
+      "config": {
+        "includeFiles": [
+          "app/**",
+          "bootstrap/**",
+          "config/**",
+          "database/**",
+          "public/**",
+          "resources/**",
+          "routes/**",
+          "storage/**",
+          "vendor/**"
+        ]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "^/build/(.*)",
+      "dest": "public/build/$1"
+    },
+    {
+      "src": "^/assets/(.*)",
+      "dest": "public/assets/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "public/index.php"
+    }
+  ],
+  "env": {
+    "APP_ENV": "production",
+    "APP_DEBUG": "false",
+    "LOG_CHANNEL": "stderr"
+  }
+>>>>>>> a7957878030d24bc407c55511f3853ecdae15155
 }
