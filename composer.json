@@ -1,9 +1,4 @@
 {
-    "scripts": {
-        "vercel": [
-            "composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction"
-        ]
-    }
     "$schema": "https://getcomposer.org/schema.json",
     "name": "laravel/laravel",
     "type": "project",
