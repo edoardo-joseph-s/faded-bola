@@ -1,41 +1,31 @@
 {
     "version": 2,
-    "builds": [
-        {
-            "src": "public/index.php",
-            "use": "vercel-php@0.6.2",
-            "config": {
-                "includeFiles": [
-                    "app/**",
-                    "bootstrap/**",
-                    "config/**",
-                    "database/**",
-                    "public/**",
-                    "resources/**",
-                    "routes/**",
-                    "storage/**",
-                    "vendor/**"
-                ]
-            }
+    "framework": "laravel",
+    "functions": {
+        "api/index.php": {
+            "maxDuration": 60
         }
-    ],
+    },
     "routes": [
         {
-            "src": "^/build/(.*)",
-            "dest": "public/build/$1"
+            "src": "/css/(.*)",
+            "dest": "/public/css/$1"
         },
         {
-            "src": "^/assets/(.*)",
-            "dest": "public/assets/$1"
+            "src": "/js/(.*)",
+            "dest": "/public/js/$1"
+        },
+        {
+            "src": "/images/(.*)",
+            "dest": "/public/images/$1"
+        },
+        {
+            "src": "/favicon.ico",
+            "dest": "/public/favicon.ico"
         },
         {
             "src": "/(.*)",
-            "dest": "public/index.php"
+            "dest": "/public/index.php"
         }
-    ],
-    "env": {
-        "APP_ENV": "production",
-        "APP_DEBUG": "false",
-        "LOG_CHANNEL": "stderr"
-    }
+    ]
 }
