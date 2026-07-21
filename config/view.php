@@ -1,5 +1,8 @@
 <?php
 
 return [
-    'cachePath' => null, // This disables blade caching
+    'paths' => [
+        resource_path('views'),
+    ],
+    'compiled' => '/tmp/views',
 ];
