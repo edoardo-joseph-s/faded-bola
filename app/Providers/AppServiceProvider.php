@@ -21,6 +21,15 @@ class AppServiceProvider extends ServiceProvider
             return;
         }
 
+        $databasePath = config('database.connections.sqlite.database');
+        if ($databasePath && !file_exists(dirname($databasePath))) {
+            @mkdir(dirname($databasePath), 0755, true);
+        }
+
+        if ($databasePath && !file_exists($databasePath)) {
+            @touch($databasePath);
+        }
+
         if (app()->environment('production') && !Schema::hasTable('migrations')) {
             Artisan::call('migrate', ['--force' => true]);
         }
