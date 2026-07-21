@@ -29,6 +29,8 @@ class DatabaseTransactionsManager
 
     /**
      * Create a new database transactions manager instance.
+     *
+     * @return void
      */
     public function __construct()
     {
@@ -139,8 +141,6 @@ class DatabaseTransactionsManager
                 do {
                     $this->removeCommittedTransactionsThatAreChildrenOf($this->currentTransaction[$connection]);
 
-                    $this->currentTransaction[$connection]->executeCallbacksForRollback();
-
                     $this->currentTransaction[$connection] = $this->currentTransaction[$connection]->parent;
                 } while (
                     isset($this->currentTransaction[$connection]) &&
@@ -158,12 +158,6 @@ class DatabaseTransactionsManager
      */
     protected function removeAllTransactionsForConnection($connection)
     {
-        if ($this->currentTransaction) {
-            for ($currentTransaction = $this->currentTransaction[$connection]; isset($currentTransaction); $currentTransaction = $currentTransaction->parent) {
-                $currentTransaction->executeCallbacksForRollback();
-            }
-        }
-
         $this->currentTransaction[$connection] = null;
 
         $this->pendingTransactions = $this->pendingTransactions->reject(
@@ -212,19 +206,6 @@ class DatabaseTransactionsManager
     }
 
     /**
-     * Register a callback for transaction rollback.
-     *
-     * @param  callable  $callback
-     * @return void
-     */
-    public function addCallbackForRollback($callback)
-    {
-        if ($current = $this->callbackApplicableTransactions()->last()) {
-            return $current->addCallbackForRollback($callback);
-        }
-    }
-
-    /**
      * Get the transactions that are applicable to callbacks.
      *
      * @return \Illuminate\Support\Collection<int, \Illuminate\Database\DatabaseTransactionRecord>
@@ -248,7 +229,7 @@ class DatabaseTransactionsManager
     /**
      * Get all of the pending transactions.
      *
-     * @return \Illuminate\Support\Collection<int, \Illuminate\Database\DatabaseTransactionRecord>
+     * @return \Illuminate\Support\Collection
      */
     public function getPendingTransactions()
     {
@@ -258,7 +239,7 @@ class DatabaseTransactionsManager
     /**
      * Get all of the committed transactions.
      *
-     * @return \Illuminate\Support\Collection<int, \Illuminate\Database\DatabaseTransactionRecord>
+     * @return \Illuminate\Support\Collection
      */
     public function getCommittedTransactions()
     {

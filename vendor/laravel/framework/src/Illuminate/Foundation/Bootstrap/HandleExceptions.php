@@ -92,10 +92,6 @@ class HandleExceptions
             return;
         }
 
-        if (! static::$app->bound('config')) {
-            return;
-        }
-
         try {
             $logger = static::$app->make(LogManager::class);
         } catch (Exception) {
@@ -125,7 +121,6 @@ class HandleExceptions
     protected function shouldIgnoreDeprecationErrors()
     {
         return ! class_exists(LogManager::class)
-            || is_null(static::$app)
             || ! static::$app->hasBeenBootstrapped()
             || (static::$app->runningUnitTests() && ! Env::get('LOG_DEPRECATIONS_WHILE_TESTING'));
     }
@@ -137,21 +132,21 @@ class HandleExceptions
      */
     protected function ensureDeprecationLoggerIsConfigured()
     {
-        $config = static::$app['config'];
+        with(static::$app['config'], function ($config) {
+            if ($config->get('logging.channels.deprecations')) {
+                return;
+            }
 
-        if ($config->get('logging.channels.deprecations')) {
-            return;
-        }
+            $this->ensureNullLogDriverIsConfigured();
 
-        $this->ensureNullLogDriverIsConfigured();
+            if (is_array($options = $config->get('logging.deprecations'))) {
+                $driver = $options['channel'] ?? 'null';
+            } else {
+                $driver = $options ?? 'null';
+            }
 
-        if (is_array($options = $config->get('logging.deprecations'))) {
-            $driver = $options['channel'] ?? 'null';
-        } else {
-            $driver = $options ?? 'null';
-        }
-
-        $config->set('logging.channels.deprecations', $config->get("logging.channels.{$driver}"));
+            $config->set('logging.channels.deprecations', $config->get("logging.channels.{$driver}"));
+        });
     }
 
     /**
@@ -161,16 +156,16 @@ class HandleExceptions
      */
     protected function ensureNullLogDriverIsConfigured()
     {
-        $config = static::$app['config'];
+        with(static::$app['config'], function ($config) {
+            if ($config->get('logging.channels.null')) {
+                return;
+            }
 
-        if ($config->get('logging.channels.null')) {
-            return;
-        }
-
-        $config->set('logging.channels.null', [
-            'driver' => 'monolog',
-            'handler' => NullHandler::class,
-        ]);
+            $config->set('logging.channels.null', [
+                'driver' => 'monolog',
+                'handler' => NullHandler::class,
+            ]);
+        });
     }
 
     /**
@@ -335,11 +330,27 @@ class HandleExceptions
      */
     public static function flushHandlersState(?TestCase $testCase = null)
     {
-        while (get_exception_handler() !== null) {
+        while (true) {
+            $previousHandler = set_exception_handler(static fn () => null);
+
+            restore_exception_handler();
+
+            if ($previousHandler === null) {
+                break;
+            }
+
             restore_exception_handler();
         }
 
-        while (get_error_handler() !== null) {
+        while (true) {
+            $previousHandler = set_error_handler(static fn () => null);
+
+            restore_error_handler();
+
+            if ($previousHandler === null) {
+                break;
+            }
+
             restore_error_handler();
         }
 
