@@ -122,7 +122,8 @@ return [
         ],
 
         'emergency' => [
-            'path' => storage_path('logs/laravel.log'),
+            'driver' => 'stderr',
+            'path' => 'php://stderr',
         ],
     ],
 ];
