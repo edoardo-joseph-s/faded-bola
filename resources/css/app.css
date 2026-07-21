@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #00aeef;
+  --color-primary-dark: #008cc4;
+  --color-accent: #f6b332;
+  --color-accent-dark: #de9c18;
+  --color-ink: #152330;
+  --color-muted: #667085;
+  --color-line: #e7edf3;
+  --color-soft: #f4f9fc;
+}
+
+/* Reset */
+html { scroll-behavior: smooth; }
+body { font-family: Arial, Helvetica, sans-serif; }
+img { display: block; }
+
+/* Hamburger animation: three lines → X */
+.navbar.menu-open .hamburger span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.navbar.menu-open .hamburger span:nth-child(2) { opacity: 0; }
+.navbar.menu-open .hamburger span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+.hamburger span { transition: transform 0.25s, opacity 0.25s; }
+
+/* Dropdown arrow rotation */
+.dropdown-toggle::after {
+  content: '\25BC';
+  font-size: 10px;
+  margin-left: 6px;
+  display: inline-block;
+  transition: transform 0.25s;
+}
+@media (min-width: 861px) {
+  .menu-item-has-children:hover > a.dropdown-toggle::after { transform: rotate(180deg); }
+}
+@media (max-width: 860px) {
+  .menu-item-has-children.active > a.dropdown-toggle::after { transform: rotate(180deg); }
+}
+
+/* Desktop: show sub-menu on hover */
+@media (min-width: 861px) {
+  .menu-item-has-children:hover > .sub-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}
+
+/* Mobile: show sub-menu when JS adds .active class */
+@media (max-width: 860px) {
+  .menu-item-has-children.active > .sub-menu { display: block; }
+}
+
+/* Mobile: show nav panel when hamburger is toggled */
+@media (max-width: 860px) {
+  .navbar.menu-open .nav-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}
+
+/* Hero background (home) */
+.hero-home {
+  background: linear-gradient(90deg, rgba(255,255,255,.94), rgba(255,255,255,.86) 44%, rgba(255,255,255,.16)),
+              url('/assets/images/layanan/cuci%20mobil.jpg') center right / cover no-repeat;
+}
+@media (max-width: 860px) {
+  .hero-home {
+    background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.9) 52%, rgba(255,255,255,.58)),
+                url('/assets/images/layanan/cuci%20mobil.jpg') center bottom / cover no-repeat;
+  }
+}
+
+/* Page hero gradient (about, pricing, gallery, service detail, orders) */
+.page-hero {
+  background: linear-gradient(135deg, #f7fbfd, #fff 58%, #fff7e8);
+}
+
+/* Admin background */
+.admin-bg {
+  background: linear-gradient(135deg, #f4f9fc, #fff 48%, #fff7e8);
+}
+
+/* Testimonial slider hide scrollbar */
+.testimonial-slider { scrollbar-width: none; }
+.testimonial-slider::-webkit-scrollbar { display: none; }
+
+/* Admin table scroll fade hint */
+.table-scroll-wrapper {
+  position: relative;
+}
+.table-scroll-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 40px;
+  background: linear-gradient(to left, rgba(255,255,255,0.9), transparent);
+  pointer-events: none;
+  border-radius: 0 12px 12px 0;
+}

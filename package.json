@@ -1,0 +1,16 @@
+{
+    "$schema": "https://www.schemastore.org/package.json",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "@tailwindcss/postcss": "^4.3.2",
+        "autoprefixer": "^10.5.2",
+        "postcss": "^8.5.16",
+        "tailwindcss": "^4.3.2",
+        "vite": "^8.1.3"
+    }
+}
