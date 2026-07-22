@@ -3,7 +3,6 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   build: {
     outDir: 'public/build',
-    manifest: true,
     cssCodeSplit: false,
     rollupOptions: {
       input: 'resources/css/app.css',
@@ -11,9 +10,5 @@ export default defineConfig({
         assetFileNames: 'assets/[name][extname]',
       },
     },
-  },
-  server: {
-    middlewareMode: false,
-    cors: true,
   },
 })
