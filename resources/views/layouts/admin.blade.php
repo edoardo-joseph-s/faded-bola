@@ -9,7 +9,15 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/images/favicon/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/images/favicon/favicon-16x16.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('assets/images/favicon/apple-touch-icon.png') }}">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    @php
+        $cssPath = public_path('css/app.css');
+        $cssContent = file_exists($cssPath) ? file_get_contents($cssPath) : null;
+    @endphp
+    @if ($cssContent)
+        <style>{!! $cssContent !!}</style>
+    @else
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    @endif
 </head>
 <body>
     @yield('content')
