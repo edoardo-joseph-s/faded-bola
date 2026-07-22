@@ -2,13 +2,13 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   build: {
-    outDir: 'public/build',
-    emptyOutDir: true,
+    outDir: 'public',
+    emptyOutDir: false,
     copyPublicDir: false,
     rolldownOptions: {
       input: 'resources/css/app.css',
       output: {
-        assetFileNames: 'assets/[name][extname]',
+        assetFileNames: 'css/[name][extname]',
       },
     },
   },
