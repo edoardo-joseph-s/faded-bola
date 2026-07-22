@@ -12,7 +12,7 @@ return [
     |
     */
 
-    'username' => env('ADMIN_USERNAME', 'admin'),
-    'password' => env('ADMIN_PASSWORD'),
+    'username' => 'admin',
+    'password' => '$2y$12$BDc2l3hRFxq70KSDrOr8pu3gRxtYVtbFW2CDPmwluQ.dfKB1VVy/y',
 
 ];
