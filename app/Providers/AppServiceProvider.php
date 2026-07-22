@@ -17,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Config::set('session.driver', 'cookie');
+        Config::set('cache.default', 'array');
 
         @mkdir(config('view.compiled'), 0755, true);
         @mkdir('/tmp/sessions', 0755, true);
